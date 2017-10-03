@@ -442,7 +442,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(ArrayList<Contacts> contactses) {
             refreshlistenerobj.refresh(true);
-            bar.dismiss();
+            try {
+                if(bar!=null&&bar.isShowing()){
+                    bar.dismiss();
+                }
+            }catch (Exception e1){
+                e1.printStackTrace();
+            }
+
             if(prefofsync.getBoolean("RED",true)){
                 SharedPreferences.Editor editor=prefofsync.edit();
                 editor.putBoolean("RED",false);
@@ -460,7 +467,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            bar.show();
+            try{
+                if(bar!=null){
+                    bar.show();
+                }
+            }catch (Exception e2){
+                e2.printStackTrace();
+            }
+
+
         }
     }
 }

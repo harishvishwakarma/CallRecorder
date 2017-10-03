@@ -210,7 +210,7 @@ public class AllFragment extends Fragment implements MainActivity.refreshstener{
         if (!recordedContacts.isEmpty()) {
             recordedContacts.clear();
         }
-        recordedContacts = ContactProvider.getCallList(getContext(), recording, "");
+        recordedContacts = ContactProvider.getCallList(ctx, recording, ""); //major changes
         for (Contacts contacts : recordedContacts) {
             if (contacts.getView() == 2) {
                 if (!headerevent.containsKey("2")) {

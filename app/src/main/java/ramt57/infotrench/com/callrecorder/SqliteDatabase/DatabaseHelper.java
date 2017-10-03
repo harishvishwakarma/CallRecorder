@@ -57,20 +57,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    // Getting single contact
-   public Contacts getContact(String number) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-                         KEY_PH_NO,KEY_FAV,KEY_RECORDING_STATE }, KEY_PH_NO + "=?",
-                new String[] { number }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        Contacts contact = new Contacts(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)));
-        // return contact
-       cursor.close();
-        return contact;
-    }
+//    // Getting single contact
+//   public Contacts getContact(String number) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
+//                         KEY_PH_NO,KEY_FAV,KEY_RECORDING_STATE }, KEY_PH_NO + "=?",
+//                new String[] { number }, null, null, null, null);
+//        if (cursor != null)
+//            cursor.moveToFirst();
+//        Contacts contact = new Contacts(Integer.parseInt(cursor.getString(0)),
+//                cursor.getString(1),Integer.parseInt(cursor.getString(2)),Integer.parseInt(cursor.getString(3)));
+//        // return contact
+//       cursor.close();
+//        return contact;
+//    }
 
     public Contacts isContact(String number) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -89,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         // return contact list
         cursor.close();
+        db.close();
         return contact;
     }
 
@@ -114,32 +115,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         // return contact list
         cursor.close();
+        db.close();
         return contactList;
     }
 
-    public ArrayList<Contacts> AllContacts() {
-        ArrayList<Contacts> contactList = new ArrayList<Contacts>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS ;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Contacts contact = new Contacts();
-                contact.setId(Integer.parseInt(cursor.getString(0)));
-                contact.setNumber(cursor.getString(1));
-                contact.setFav(Integer.parseInt(cursor.getString(2)));
-                contact.setState(Integer.parseInt(cursor.getString(3)));
-                // Adding contact to list
-                contactList.add(contact);
-            } while (cursor.moveToNext());
-        }
-        // return contact list
-        cursor.close();
-        return contactList;
-    }
+//    public ArrayList<Contacts> AllContacts() {
+//        ArrayList<Contacts> contactList = new ArrayList<Contacts>();
+//        // Select All Query
+//        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS ;
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//        // looping through all rows and adding to list
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Contacts contact = new Contacts();
+//                contact.setId(Integer.parseInt(cursor.getString(0)));
+//                contact.setNumber(cursor.getString(1));
+//                contact.setFav(Integer.parseInt(cursor.getString(2)));
+//                contact.setState(Integer.parseInt(cursor.getString(3)));
+//                // Adding contact to list
+//                contactList.add(contact);
+//            } while (cursor.moveToNext());
+//        }
+//        // return contact list
+//        cursor.close();
+//        return contactList;
+//    }
 
     // Updating single contact
     public int updateContact(Contacts contact) {
@@ -171,6 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
+        db.close();
         // return count
         return cursor.getCount();
     }

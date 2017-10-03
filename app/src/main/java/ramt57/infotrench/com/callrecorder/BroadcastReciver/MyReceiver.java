@@ -25,7 +25,7 @@ public abstract class MyReceiver extends BroadcastReceiver {
     private static Date callStartTime;
     private static boolean isIncoming;
     private static String savedNumber;
-    static MediaRecorder recorder= new MediaRecorder();
+    static MediaRecorder recorder;
     static AudioManager audioManager;
     static File audiofile;
     Context context;
@@ -118,6 +118,7 @@ public abstract class MyReceiver extends BroadcastReceiver {
         lastState = state;
     }
     public  void startRecord(String name){
+        recorder=new MediaRecorder();
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(context);
         int source=Integer.parseInt(SP.getString("RECORDER","2"));
         File sampleDir;
@@ -133,6 +134,7 @@ public abstract class MyReceiver extends BroadcastReceiver {
         String file_name = name;
         try {
             audiofile = File.createTempFile(file_name, ".3gpp", sampleDir);
+            recorder.reset();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,9 +172,13 @@ public abstract class MyReceiver extends BroadcastReceiver {
                 break;
             case 4:
                 try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_CALL);
+                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
                 }catch (Exception e){
-                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    try{
+                        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    }catch (Exception e2){
+                        e2.printStackTrace();
+                    }
                 }
                 break;
             default:
@@ -201,7 +207,11 @@ public abstract class MyReceiver extends BroadcastReceiver {
         try {
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         }catch (Exception e){
-            e.printStackTrace();
+            try {
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+            }catch (Exception e7){
+                e7.printStackTrace();
+            }
         }
         try {
             recorder.setOutputFile(audiofile.getAbsolutePath());
@@ -214,10 +224,12 @@ public abstract class MyReceiver extends BroadcastReceiver {
             record = true;
         } catch (IllegalStateException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e){
-            e.printStackTrace();
+        } catch (IOException e8) {
+            e8.printStackTrace();
+        } catch (RuntimeException e9){
+            e9.printStackTrace();
+        }catch (Exception e2){
+            e2.printStackTrace();
         }
     }
 
