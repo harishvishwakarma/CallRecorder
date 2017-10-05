@@ -13,5 +13,5 @@
  
   icon from Flaticon www.flaticon.com
   
-  #Logo and Splash
-  by-Naveen Rai
+ #Logo and Splash
+  by-Naveen Rai www.facebook.com/naveen.rai.752
