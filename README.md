@@ -12,3 +12,6 @@
  #Icons are licensed
  
   icon from Flaticon www.flaticon.com
+  
+  #Logo and Splash
+  by-Naveen Rai
