@@ -106,12 +106,28 @@ public class Outgoing extends Fragment {
                         ContactProvider.showDialog(v.getContext(),records,contacts1);
                     }
                 }else {
-                    Contacts contacts= (Contacts) realrecordingcontact.get(position);
-                    String records=ContactProvider.getRecordsList(v.getContext(),recording2,"OUT",contacts);
-                    if(Build.VERSION.SDK_INT>18){
-                        ContactProvider.openMaterialSheetDialog(getLayoutInflater(),position,records,StringUtils.prepareContacts(ctx,contacts.getNumber()));
-                    }else{
-                        ContactProvider.showDialog(v.getContext(),records,contacts);
+//                    Contacts contacts= (Contacts) realrecordingcontact.get(position);
+//                    String records=ContactProvider.getRecordsList(v.getContext(),recording2,"OUT",contacts);
+//                    if(Build.VERSION.SDK_INT>18){
+//                        ContactProvider.openMaterialSheetDialog(getLayoutInflater(),position,records,StringUtils.prepareContacts(ctx,contacts.getNumber()));
+//                    }else{
+//                        ContactProvider.showDialog(v.getContext(),records,contacts);
+//                    }
+
+                    try{
+                        Contacts contacts = (Contacts) realrecordingcontact.get(position);
+                        String records = ContactProvider.getRecordsList(v.getContext(), recording2, "", contacts);
+                        if (Build.VERSION.SDK_INT > 18) {
+                            try {
+                                ContactProvider.openMaterialSheetDialog(getLayoutInflater(), position, records, StringUtils.prepareContacts(ctx, contacts.getNumber()));
+                            }catch (Exception e1){
+                                e1.printStackTrace();
+                            }
+                        } else {
+                            ContactProvider.showDialog(v.getContext(), records, contacts);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
                 ContactProvider.setItemrefresh(new ContactProvider.refresh() {

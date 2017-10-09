@@ -56,35 +56,35 @@ public class ContactProvider {
          ArrayList<Contacts> list = new ArrayList<>();
          ContentResolver contentResolver = ctx.getContentResolver();
          Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-                if (cursor.getCount() > 0) {
-                    while (cursor.moveToNext()) {
-                        String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                        if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                            Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor cursorInfo = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
 //                            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(),
 //                                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id)));
 
-                            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
-                            Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+                    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(id));
+                    Uri pURI = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 
 //                            Bitmap photo = null;
 //                            if (inputStream != null) {
 ////                                photo = BitmapFactory.decodeStream(inputStream);
 //                            }
-                            while (cursorInfo.moveToNext()) {
-                                Contacts info = new Contacts();
-                                info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                                info.setNumber(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                    while (cursorInfo.moveToNext()) {
+                        Contacts info = new Contacts();
+                        info.setName(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+                        info.setNumber(cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
 //                                info.setPhoto(photo);
-                                info.setPhotoUri(pURI.toString());
-                                list.add(info);
-                            }
-                            cursorInfo.close();
-                        }
+                        info.setPhotoUri(pURI.toString());
+                        list.add(info);
                     }
+                    cursorInfo.close();
                 }
-                cursor.close();
+            }
+        }
+        cursor.close();
         return list;
     }
 
@@ -517,38 +517,25 @@ public class ContactProvider {
 
     }
     public static void playmusic(Context ctx,String path,String str){
-//        Intent intent = new Intent();
-//        intent.setAction(android.content.Intent.ACTION_VIEW);
-//        File file = new File(path);
-//        Uri fileuri = FileProvider.getUriForFile(ctx,
-//                BuildConfig.APPLICATION_ID + ".provider",
-//                file);
-//        intent.setDataAndType(fileuri, "audio/*");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        try{
-//            ctx.startActivity(intent);
-//        }catch (Exception e){
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        File file = new File(path);
+        Uri fileuri = FileProvider.getUriForFile(ctx,
+                BuildConfig.APPLICATION_ID + ".provider",
+                file);
+        intent.setDataAndType(fileuri, "audio/*");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try{
+            ctx.startActivity(intent);
+        }catch (Exception e){
 //            Toast.makeText(ctx, "Media player not found.", Toast.LENGTH_SHORT).show();
-//        }
-
-//        final MediaPlayer mp=new MediaPlayer();
-//        try {
-//            mp.setDataSource(path);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            mp.prepare();
-//            mp.start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        Intent i=new Intent(ctx,Main2Activity.class);
-        i.putExtra("PATH",str);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        ctx.startActivity(i);
+            Intent i=new Intent(ctx,Main2Activity.class);
+            i.putExtra("PATH",str);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            ctx.startActivity(i);
+        }
     }
 
     //SQL Lite Database
