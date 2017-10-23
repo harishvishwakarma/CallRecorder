@@ -369,9 +369,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int process_outgoing_call= ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);//
         int modify_audio_setting= ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
         int read_contacts= ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
+        int recive_boot_completed=ContextCompat.checkSelfPermission(this,Manifest.permission.RECEIVE_BOOT_COMPLETED);//
 
         if (read_contacts != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
+        }
+        if(recive_boot_completed!=PackageManager.PERMISSION_GRANTED){
+            listPermissionsNeeded.add(Manifest.permission.RECEIVE_BOOT_COMPLETED);
         }
         if (storage != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);

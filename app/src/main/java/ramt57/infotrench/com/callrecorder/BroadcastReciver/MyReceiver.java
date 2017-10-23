@@ -47,6 +47,7 @@ public abstract class MyReceiver extends BroadcastReceiver {
             String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
             String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
             int state = 0;
+            assert stateStr != null;
             if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
                 state = TelephonyManager.CALL_STATE_IDLE;
             } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
@@ -133,103 +134,81 @@ public abstract class MyReceiver extends BroadcastReceiver {
         }
         String file_name = name;
         try {
-            audiofile = File.createTempFile(file_name, ".3gpp", sampleDir);
-            recorder.reset();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        switch (source){
-            case 0:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            case 1:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    audioManager =(AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                    audioManager.setStreamVolume(3,audioManager.getStreamMaxVolume(3),0);
-                    audioManager.setSpeakerphoneOn(true);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            case 2:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            case 3:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-            case 4:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                }catch (Exception e){
-                    try{
+            audiofile = File.createTempFile(file_name, ".amr", sampleDir);
+//            recorder.reset(); //new change here
+            switch (source){
+                case 0:
+                    try {
                         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    }catch (Exception e2){
-                        e2.printStackTrace();
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                }
-                break;
-            default:
-                try {
-                    recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                break;
-        }
-        try {
-            recorder.setAudioSamplingRate(8000);
-            recorder.setAudioEncodingBitRate(12200);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try{
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        }catch (Exception e){
+                    break;
+                case 1:
+                    try {
+                        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        audioManager =(AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                        audioManager.setStreamVolume(3,audioManager.getStreamMaxVolume(3),0);
+                        audioManager.setSpeakerphoneOn(true);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    try {
+                        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case 4:
+                    try {
+                        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                    }catch (Exception e){
+                        try{
+                            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                        }catch (Exception e2){
+                            e2.printStackTrace();
+                        }
+                    }
+                    break;
+                default:
+                    try {
+                        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+            }
             try{
                 recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-            }catch (Exception d){
-                d.printStackTrace();
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                recorder.setOutputFile(audiofile.getAbsolutePath());
+                try {
+                    recorder.prepare();
+                    recorder.start();
+                    record = true;
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                } catch (IOException e8) {
+                    e8.printStackTrace();
+                } catch (RuntimeException e9){
+                    e9.printStackTrace();
+                }catch (Exception e2){
+                    e2.printStackTrace();
+                }
+            }catch (Exception e){
+
             }
-        }
-        try {
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        }catch (Exception e){
-            try {
-                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-            }catch (Exception e7){
-                e7.printStackTrace();
-            }
-        }
-        try {
-            recorder.setOutputFile(audiofile.getAbsolutePath());
-        }catch (Exception e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        try {
-            recorder.prepare();
-            recorder.start();
-            record = true;
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e8) {
-            e8.printStackTrace();
-        } catch (RuntimeException e9){
-            e9.printStackTrace();
-        }catch (Exception e2){
-            e2.printStackTrace();
         }
     }
 
@@ -237,6 +216,7 @@ public abstract class MyReceiver extends BroadcastReceiver {
         if (record){
             try {
                 recorder.stop();
+                recorder.release();
             }catch (Exception e){
                 e.printStackTrace();
             }

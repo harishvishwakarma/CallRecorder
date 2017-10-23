@@ -629,7 +629,7 @@ public class ContactProvider {
         String s=directorypreference.getString("DIR",Environment.getExternalStorageDirectory().getAbsolutePath()+"/CallRecorder");
         return s;
     }
-    public static void showDialog(Context ctx1, final String recording, final Contacts contacts) {
+    public static void showDialog(final Context ctx1, final String recording, final Contacts contacts) {
         final Dialog dialog=new Dialog(ctx1);
         dialog.setTitle("Select Menu");
         dialog.getWindow().setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
@@ -735,7 +735,7 @@ public class ContactProvider {
                 final String filename = getFolderPath(view.getContext())+"/" + recording;
                 final File f = new File(getFolderPath(view.getContext())+"/", recording);
                 mSaver = Saver.createSaver(ONEDRIVE_APP_ID);
-                mSaver.startSaving((Activity) view.getContext(), filename, Uri.fromFile(f));
+                mSaver.startSaving((Activity) ctx1, filename, Uri.fromFile(f));
             }
         });
         dialog.show();
