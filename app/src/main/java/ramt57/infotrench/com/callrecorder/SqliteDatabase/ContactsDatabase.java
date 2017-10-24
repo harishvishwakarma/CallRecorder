@@ -103,10 +103,10 @@ public class ContactsDatabase extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Contacts contact = new Contacts();
         String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS+" WHERE "+KEY_PH_NO+" = '"+number+"'";
-        Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         //test this
         try{
+            Cursor cursor = db.rawQuery(selectQuery, null);
             if (cursor.moveToFirst()) {
                 do {
                     contact.setId(Integer.parseInt(cursor.getString(0)));
@@ -114,13 +114,15 @@ public class ContactsDatabase extends SQLiteOpenHelper{
                     // Adding contact to list
                 } while (cursor.moveToNext());
             }
+            db.close();
+            cursor.close();
         }catch (SQLiteCantOpenDatabaseException exception){
             Log.d("SQL",exception.toString());
             return  null;
+        }catch (Exception er){
+            er.printStackTrace();
         }
         // return contact list
-        db.close();
-        cursor.close();
         return contact;
     }
 }

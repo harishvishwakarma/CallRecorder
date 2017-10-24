@@ -84,7 +84,9 @@ public class ContactProvider {
                 }
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return list;
     }
 
