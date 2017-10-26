@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -191,6 +192,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 adapter.notifyDataSetChanged();
             }
         });
+        String manufacturer = "xiaomi";
+        if(manufacturer.equalsIgnoreCase(android.os.Build.MANUFACTURER)) {
+            //this will open auto start screen where user can enable permission for your app
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+            startActivity(intent);
+        }
     }
 
     private boolean storeToDatabase(ArrayList<Contacts> phoneContacts) {
@@ -357,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public interface refreshstener{
         public void refresh(boolean b);
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private  boolean checkAndRequestPermissions() {
 
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -370,9 +379,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int modify_audio_setting= ContextCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS);//
         int read_contacts= ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);//
         int recive_boot_completed=ContextCompat.checkSelfPermission(this,Manifest.permission.RECEIVE_BOOT_COMPLETED);//
-
+        int accebility=ContextCompat.checkSelfPermission(this,Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
         if (read_contacts != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
+        }
+        if(accebility!=PackageManager.PERMISSION_GRANTED){
+            listPermissionsNeeded.add(Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
         }
         if(recive_boot_completed!=PackageManager.PERMISSION_GRANTED){
             listPermissionsNeeded.add(Manifest.permission.RECEIVE_BOOT_COMPLETED);

@@ -84,4 +84,5 @@
     <string name="recoring_issue">Please remove any other call recording apps and apply setting from the setting option.Apply setting to change various audio source.
     If default option does not work choose speaker option which gaurentees your call record.</string>
     <string name="issue_2">Some phones don\'t support call recording regardless the setting you apply.But you can still choose speaker with mic option to record call.</string>
+    <string name="service_desc">call reciver</string>
 </resources>

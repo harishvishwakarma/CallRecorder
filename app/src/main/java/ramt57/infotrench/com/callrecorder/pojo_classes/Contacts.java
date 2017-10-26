@@ -1,7 +1,6 @@
 package ramt57.infotrench.com.callrecorder.pojo_classes;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 /**
@@ -135,7 +134,6 @@ public class Contacts  implements Comparable{
         int compareage= (int) ((Contacts)o).getTimestamp();
         /* For Ascending order*/
         return (int) (this.timestamp-compareage);
-
         /* For Descending order do like this */
         //return compareage-this.studentage;
     }
