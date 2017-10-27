@@ -28,7 +28,7 @@ Please note that call recording does not work on certain handsets and can result
 This is due to capabilities of different chipset/CPU or Android version each brand/model have. 
 ## Licence
 `> You are free to use the code as sample code and/or include portions of it in your own projects.`
-`.If possible credit me,it would be nice if you credit me and where you got it from`
+`.If possible credit me,But plz change layout of your project and dont copy all of it
 ### Icons are licensed
 icon from Flaticon www.flaticon.com
 #### Logo and Splash by .If possible credit me,it would be nice if you credit me and where you got it from
